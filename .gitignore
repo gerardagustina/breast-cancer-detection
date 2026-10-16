@@ -218,3 +218,5 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+# Model weights (too large for Git; published as a GitHub Release)
+*.pt
