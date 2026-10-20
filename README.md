@@ -4,6 +4,8 @@ Binary classification of breast ultrasound images (**malignant vs. normal/benign
 
 > ⚠️ Educational project. Not intended for clinical use.
 
+📄 [Model card](MODEL_CARD.md) · 📦 [Trained model (v1.0 release)](https://github.com/gerardagustina/breast-cancer-detection/releases/tag/v1.0)
+
 ## Key results (test set, 156 images)
 
 | Metric | Value |
@@ -79,4 +81,44 @@ Lowering the threshold detects **6 more cancers at the cost of 12 more false ala
 - **Small dataset**, especially the validation set (21 malignant cases): the clinical threshold was **unstable across random seeds** (0.12–0.40).
 - **Wide confidence interval** for test sensitivity (≈ 81–98%) with only 42 malignant test cases.
 - **No patient-level information**: a patient-level split could not be verified.
-- **Single-centre data** and no external validation: performance on other hospitals or devices
+- **Single-centre data** and no external validation: performance on other hospitals or devices is unknown.
+- **Uncalibrated probabilities:** the model's outputs should not be read as true risk estimates.
+
+## Next steps
+
+- **Cross-validation + ensemble** of models trained with different seeds, for a more robust threshold.
+- **Probability calibration** (e.g., temperature scaling).
+- **Translation augmentation** to reduce centre bias.
+- **External validation** on an independent breast ultrasound dataset.
+
+## How to run
+
+The notebooks are designed for **Google Colab** (free GPU). Open them in order with the "Open in Colab" button at the top of each notebook:
+
+1. `notebooks/01_EDA.ipynb`: exploratory data analysis
+2. `notebooks/02_preprocessing.ipynb`: MONAI preprocessing pipeline
+3. `notebooks/03_training.ipynb`: model, training, evaluation and Grad-CAM
+
+Notebook 03 clones this repository and imports the reusable code from `src/`.
+
+To run locally: `pip install -r requirements.txt`. To use the trained model without retraining, download `best_model.pt` from the [v1.0 release](https://github.com/gerardagustina/breast-cancer-detection/releases/tag/v1.0).
+
+## Repository structure
+
+```
+breast-cancer-detection/
+├── notebooks/          # Jupyter notebooks (EDA, preprocessing, training)
+├── src/                # Reusable code: data pipeline (data.py) and model (model.py)
+├── figures/            # Result figures used in this README
+├── MODEL_CARD.md       # Model documentation: intended use, results, limitations
+├── requirements.txt    # Pinned library versions
+└── README.md
+```
+
+## Tech stack
+
+Python · PyTorch · torchvision · MONAI · scikit-learn · NumPy · pandas · Matplotlib · Google Colab · Git
+
+## References
+
+- Yang, J. et al. *MedMNIST v2: A large-scale lightweight benchmark for 2D and 3D biomedical imageSS
